@@ -20,7 +20,7 @@ namespace Api_DatahubImplementation
                 httpClient.DefaultRequestHeaders
                     .Accept
                     .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            }).AddHttpMessageHandler<Object>();
+            }).AddHttpMessageHandler<Object>(); // voir func-datahub-apis
             builder.Services.AddTransient<IInfoVehicleService, InfoVehicleService>();
         }
     }

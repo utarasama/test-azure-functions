@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lib_DatahubImplementation.Models
+namespace Lib_DatahubImplementation.Models.InfoVehicleResponses
 {
-    public  class InfoVehicleResponseModel
+    public class InfoVehicleSuccessResponseModel : InfoVehicleResponseModel
     {
         [JsonProperty("vehicleData")]
         public VehicleData VehicleData { get; set; }

@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lib_DatahubImplementation.Models
 {
@@ -19,10 +14,11 @@ namespace Lib_DatahubImplementation.Models
         public decimal? PriceNewGross { get; set; }
 
 
-        public static List<VehicleOption> VehicleOptionsFromStringArray(string[] options)
+        public static List<VehicleOption>? VehicleOptionsFromStringArray(string[] options)
         {
-            if (options == null) return null;
-            List<VehicleOption> outOptions = new List<VehicleOption>();
+            if (options == null)
+                return null;
+            List<VehicleOption> outOptions = new();
             foreach (string itemName in options)
             {
                 outOptions.Add(new VehicleOption() { Name = itemName });

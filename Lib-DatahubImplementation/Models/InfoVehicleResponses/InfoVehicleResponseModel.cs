@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lib_DatahubImplementation.Models.InfoVehicleResponses
+﻿namespace Lib_DatahubImplementation.Models.InfoVehicleResponses
 {
+    /// <summary>
+    /// Parent class for <see cref="InfoVehicleSuccessResponseModel"/> and <see cref="InfoVehicleFailureResponseModel"/>.
+    /// </summary>
     public class InfoVehicleResponseModel { }
 }

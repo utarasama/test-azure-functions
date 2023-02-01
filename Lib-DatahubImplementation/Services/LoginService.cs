@@ -1,9 +1,5 @@
 ﻿using Lib_DatahubImplementation.Clients;
 using Lib_DatahubImplementation.Models;
-using Microsoft.Extensions.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Caching;
-using System.Text;
 
 namespace Lib_DatahubImplementation.Services
 {
@@ -26,7 +22,7 @@ namespace Lib_DatahubImplementation.Services
         /// Gets a token from DataHub
         /// </summary>
         /// <returns>The token object</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">Exception thrown by the token generator.</exception>
         public async Task<AzureLoginResponseModel> PostTokenAsync()
         {
             return await TokenGenerator.PostTokenAsync();

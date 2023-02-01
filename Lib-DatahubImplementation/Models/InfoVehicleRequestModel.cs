@@ -6,9 +6,9 @@ namespace Lib_DatahubImplementation.Models
     {
         [JsonProperty("originCountry")]
         public string OriginCountry { get; set; }
-        [JsonProperty("licensePlate")]
+        [JsonProperty("licensePlate", Required = Required.DisallowNull)]
         public string LicencePlate { get; set; }
-        [JsonProperty("vin")]
+        [JsonProperty("vin", Required = Required.DisallowNull)]
         public string Vin { get; set; }
         [JsonProperty("natCode")]
         public uint NatCode { get; set; }
@@ -18,6 +18,11 @@ namespace Lib_DatahubImplementation.Models
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        public static implicit operator string(InfoVehicleRequestModel obj)
+        {
+            return obj.ToString();
         }
     }
 }

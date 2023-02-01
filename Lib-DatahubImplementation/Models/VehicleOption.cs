@@ -16,7 +16,7 @@ namespace Lib_DatahubImplementation.Models
 
         public static List<VehicleOption>? VehicleOptionsFromStringArray(string[] options)
         {
-            if (options == null)
+            if (options is null)
                 return null;
             List<VehicleOption> outOptions = new();
             foreach (string itemName in options)
@@ -24,10 +24,9 @@ namespace Lib_DatahubImplementation.Models
                 outOptions.Add(new VehicleOption() { Name = itemName });
             }
 
-            if (outOptions.Count == 0)
-                return null;
-            else
+            if (outOptions.Any())
                 return outOptions;
+            return outOptions;
         }
     }
 }

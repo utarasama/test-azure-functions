@@ -53,8 +53,7 @@ namespace Api_DatahubImplementation
             
             if (taskResponse.GetType() == typeof(InfoVehicleSuccessResponseModel))
                 return new OkObjectResult(taskResponse);
-            else
-                return new BadRequestObjectResult(taskResponse);
+            return new BadRequestObjectResult(taskResponse);
         }
     }
 }

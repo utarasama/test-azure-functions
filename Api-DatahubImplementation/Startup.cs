@@ -2,11 +2,8 @@
 using Lib_DatahubImplementation.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
 using Lib_DatahubImplementation.Clients;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace Api_DatahubImplementation
@@ -24,9 +21,15 @@ namespace Api_DatahubImplementation
                 options.ClientId = configuration["client_id"];
                 options.ClientSecret = configuration["client_secret"];
                 options.ClientResource = configuration["client_resource"];
+                options.GrantType = "client_credentials";
             });
             builder.Services.AddTransient<ILoginService, LoginService>();
-            builder.Services.AddTransient<IDatahubTokenGenerator, DatahubTokenGenerator>();
+            builder.Services.AddTransient<IDatahubTokenGenerator, DatahubTokenGenerator>()
+                .AddHttpClient<IDatahubTokenGenerator, DatahubTokenGenerator>((serviceProvider, httpClient) =>
+                {
+                    string baseUrl = serviceProvider.GetRequiredService<IConfiguration>()["base_url"];
+                    httpClient.BaseAddress = new(baseUrl);
+                });
 
             builder.Services.AddTransient<DatahubRequestHandler>();
 

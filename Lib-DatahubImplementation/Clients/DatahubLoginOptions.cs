@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 
 namespace Lib_DatahubImplementation.Clients
 {
@@ -15,5 +11,19 @@ namespace Lib_DatahubImplementation.Clients
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string ClientResource { get; set; }
+        public string GrantType { get; set; }
+
+        public override string ToString()
+        {
+            return $"client_id={ClientId}" +
+                $"&client_secret={ClientSecret}" +
+                $"&grant_type={GrantType}" +
+                $"&resource={ClientResource}";
+        }
+
+        public static implicit operator string(DatahubLoginOptions obj)
+        {
+            return obj.ToString();
+        }
     }
 }

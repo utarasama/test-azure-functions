@@ -14,25 +14,17 @@ namespace Api_DatahubImplementation
         {
             builder.Services.AddOptions<DatahubLoginOptions>().Configure<IConfiguration>((options, configuration) =>
             {
-                options.BaseUrl = configuration["base_url"];
-                options.LoginUrl = configuration["login_url"];
-                options.InfoVehicleIdUrl = configuration["info_vehicle_id_url"];
-                options.ClientSubscription = configuration["client_subscription"];
-                options.ClientId = configuration["client_id"];
-                options.ClientSecret = configuration["client_secret"];
-                options.ClientResource = configuration["client_resource"];
-                options.GrantType = "client_credentials";
+                options.AssignFromConfig(configuration);
             });
             builder.Services.AddTransient<ILoginService, LoginService>();
-            builder.Services.AddTransient<IDatahubTokenGenerator, DatahubTokenGenerator>()
+            builder.Services
+                .AddTransient<IDatahubTokenGenerator, DatahubTokenGenerator>()
                 .AddHttpClient<IDatahubTokenGenerator, DatahubTokenGenerator>((serviceProvider, httpClient) =>
                 {
                     string baseUrl = serviceProvider.GetRequiredService<IConfiguration>()["base_url"];
                     httpClient.BaseAddress = new(baseUrl);
                 });
-
             builder.Services.AddTransient<DatahubRequestHandler>();
-
             builder.Services
                 .AddTransient<IInfoVehicleService, InfoVehicleService>()
                 .AddHttpClient<IInfoVehicleService, InfoVehicleService>((serviceProvider, httpClient) =>

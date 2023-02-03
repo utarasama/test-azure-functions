@@ -1,4 +1,4 @@
-﻿using Lib_DatahubImplementation.Models;
+﻿using Lib_DatahubImplementation.Models.AzureLoginResponses;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Text;
@@ -7,7 +7,7 @@ namespace Lib_DatahubImplementation.Clients
 {
     public interface IDatahubTokenGenerator
     {
-        Task<AzureLoginResponseModel> PostTokenAsync();
+        Task<HttpResponseMessage> PostTokenAsync();
     }
 
     public class DatahubTokenGenerator : IDatahubTokenGenerator
@@ -23,9 +23,9 @@ namespace Lib_DatahubImplementation.Clients
             MyMemoryCache = memoryCache;
         }
 
-        public async Task<AzureLoginResponseModel> PostTokenAsync()
+        public async Task<HttpResponseMessage> PostTokenAsync()
         {
-            if (MyMemoryCache.TryGetValue<AzureLoginResponseModel>(_tokenCacheKey, out var azureLoginResponse))
+            if (MyMemoryCache.TryGetValue<HttpResponseMessage>(_tokenCacheKey, out var azureLoginResponse))
             {
                 // Await ici car tous les chemins de retour doivent en contenir au moins un
                 return await Task.FromResult(azureLoginResponse);
@@ -35,10 +35,13 @@ namespace Lib_DatahubImplementation.Clients
                 var httpRequest = CreateTokenRequest();
                 var loginRes = await Client.SendAsync(httpRequest);
 
-                // ReadAsAsync dans Microsoft.AspNet.WebApi.Client
-                var loginResponse = await loginRes.Content.ReadAsAsync<AzureLoginResponseModel>();
-                MyMemoryCache.Set(_tokenCacheKey, loginResponse, DateTimeOffset.Now.AddSeconds(loginResponse.ExpiresIn));
-                return loginResponse;
+                if (loginRes.IsSuccessStatusCode)
+                {
+                    // ReadAsAsync dans Microsoft.AspNet.WebApi.Client
+                    var token = await loginRes.Content.ReadAsAsync<AzureLoginSuccessResponseModel>();
+                    MyMemoryCache.Set(_tokenCacheKey, loginRes, DateTimeOffset.Now.AddSeconds(token.ExpiresIn));
+                }
+                return loginRes;
             }
             catch (Exception e)
             {

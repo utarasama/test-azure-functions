@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Lib_DatahubImplementation.Models.AzureLoginResponses;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace Lib_DatahubImplementation.Clients
 {
     public class DatahubRequestHandler : DelegatingHandler
     {
         /// <summary>
-        /// Used to get a token from cache or generate a new one.
+        /// Used to get a token from cache or to generate a new one.
         /// </summary>
         private readonly IDatahubTokenGenerator _tokenGenerator;
         private readonly DatahubLoginOptions _configuration;
@@ -18,11 +21,20 @@ namespace Lib_DatahubImplementation.Clients
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = await _tokenGenerator.PostTokenAsync();
-            request.Headers.Authorization = new(token.TokenType ?? "", token.AccessToken);
-            request.Headers.Add("Ocp-Apim-Subscription-Key", _configuration.ClientSubscription);
-            request.Headers.Add("Cache-Control", "no-cache");
-            return await base.SendAsync(request, cancellationToken);
+            var loginResponse = await _tokenGenerator.PostTokenAsync();
+            if (loginResponse.IsSuccessStatusCode)
+            {
+                // Lecture du stream d'une autre manière car il a déjà été lu ici à l'aide de ReasAsAsync()
+                var tokenString = await loginResponse.Content.ReadAsStringAsync();
+                var token = JsonConvert.DeserializeObject<AzureLoginSuccessResponseModel>(tokenString);
+
+                request.Headers.Authorization = new(token.TokenType ?? "", token.AccessToken);
+                request.Headers.Add("Ocp-Apim-Subscription-Key", _configuration.ClientSubscription);
+                request.Headers.Add("Cache-Control", "no-cache");
+
+                return await base.SendAsync(request, cancellationToken);
+            }
+            return new HttpResponseMessage { StatusCode = loginResponse.StatusCode };
         }
     }
 }

@@ -1,17 +1,15 @@
 ﻿using Lib_DatahubImplementation.Clients;
-using Lib_DatahubImplementation.Models;
 
 namespace Lib_DatahubImplementation.Services
 {
     public interface ILoginService
     {
-        Task<AzureLoginResponseModel> PostTokenAsync();
+        Task<HttpResponseMessage> PostTokenAsync();
     }
 
     public class LoginService : ILoginService
     {
         private readonly IDatahubTokenGenerator TokenGenerator;
-
 
         public LoginService(IDatahubTokenGenerator datahubTokenGenerator)
         {
@@ -23,7 +21,7 @@ namespace Lib_DatahubImplementation.Services
         /// </summary>
         /// <returns>The token object</returns>
         /// <exception cref="Exception">Exception thrown by the token generator.</exception>
-        public async Task<AzureLoginResponseModel> PostTokenAsync()
+        public async Task<HttpResponseMessage> PostTokenAsync()
         {
             return await TokenGenerator.PostTokenAsync();
         }

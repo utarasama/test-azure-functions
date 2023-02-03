@@ -1,24 +1,24 @@
 ﻿using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Newtonsoft.Json;
 
-namespace Lib_DatahubImplementation.Models
+namespace Lib_DatahubImplementation.Models.AzureLoginResponses
 {
-    public class AzureLoginResponseModel
+    public class AzureLoginSuccessResponseModel : AzureLoginResponseModel
     {
         [JsonProperty(PropertyName = "token_type")]
         [OpenApiProperty(Description = "The token type")]
-        public string? TokenType{ get; set; }
+        public string? TokenType { get; set; }
 
         [JsonProperty(PropertyName = "expires_in")]
         [OpenApiProperty(Description = "This token expires in x seconds")]
         public int ExpiresIn { get; set; }
 
         [JsonProperty(PropertyName = "ext_expires_in")]
-        public int ExtExpiresIn{ get; set; }
+        public int ExtExpiresIn { get; set; }
 
         [JsonProperty(PropertyName = "expires_on")]
         [OpenApiProperty(Description = "This token expires on x (timestamp)")]
-        public int ExpiresOn{ get; set; }
+        public int ExpiresOn { get; set; }
 
         [JsonProperty(PropertyName = "not_before")]
         [OpenApiProperty(Description = "This token doesn't expire before x (timestamp)")]

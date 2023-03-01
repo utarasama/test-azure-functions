@@ -40,6 +40,10 @@ namespace Lib_DatahubImplementation.Clients
                 $"&resource={ClientResource}";
         }
 
+        /// <summary>
+        /// Implicit convertor from <see cref="DatahubLoginOptions"/> to <see langword="string"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="DatahubLoginOptions"/> object, ready to be converted.</param>
         public static implicit operator string(DatahubLoginOptions obj)
         {
             return obj.ToString();

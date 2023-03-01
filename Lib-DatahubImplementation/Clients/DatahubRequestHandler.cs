@@ -1,10 +1,12 @@
 ﻿using Lib_DatahubImplementation.Models.AzureLoginResponses;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Net;
 
 namespace Lib_DatahubImplementation.Clients
 {
+    /// <summary>
+    /// Request handler for any <c>SendAsync</c> executed with a token.
+    /// </summary>
     public class DatahubRequestHandler : DelegatingHandler
     {
         /// <summary>

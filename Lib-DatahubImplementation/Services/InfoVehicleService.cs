@@ -11,6 +11,9 @@ namespace Lib_DatahubImplementation.Services
         Task<HttpResponseMessage> PostVehicleByIdAsync(InfoVehicleRequestModel infoVehicle);
     }
 
+    /// <summary>
+    /// Service for getting any vehicle informations.
+    /// </summary>
     public class InfoVehicleService : IInfoVehicleService
     {
         private readonly HttpClient Client;

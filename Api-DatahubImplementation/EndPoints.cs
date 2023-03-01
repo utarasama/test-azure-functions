@@ -14,17 +14,22 @@ using Lib_DatahubImplementation.Models.AzureLoginResponses;
 
 namespace Api_DatahubImplementation
 {
-    public class EndPoint
+    public class EndPoints
     {
         private readonly ILoginService _loginService;
         private readonly IInfoVehicleService _infoVehicleService;
 
-        public EndPoint(ILoginService loginService, IInfoVehicleService infoVehicleService)
+        public EndPoints(ILoginService loginService, IInfoVehicleService infoVehicleService)
         {
             _loginService = loginService;
             _infoVehicleService = infoVehicleService;
         }
 
+        /// <summary>
+        /// The purpose of this endpoint is to get a token from the Datahub API.
+        /// </summary>
+        /// <param name="req">The <c>GET</c> request, useless in this case because we don't need any parameter.</param>
+        /// <returns>An <see cref="AzureLoginSuccessResponseModel"/> containing the <c>acess_token</c> and some informations about it.</returns>
         [FunctionName("GetToken")]
         [OpenApiOperation(operationId: "GetToken", tags: new[] { "Authentication" })]
         //[OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "token", In = OpenApiSecurityLocationType.Query)]
@@ -51,6 +56,11 @@ namespace Api_DatahubImplementation
             };
         }
 
+        /// <summary>
+        /// The purpose of this endpoint is to get the informations of a vehicle based on some body parameters.
+        /// </summary>
+        /// <param name="req">The request containing the body parameters, useful in this case.</param>
+        /// <returns>The informations of the desired vehicle in an <see cref="InfoVehicleSuccessResponseModel"/>.</returns>
         [FunctionName("GetInfoVehicleById")]
         [OpenApiOperation(operationId: "GetInfoVehicleById", tags: new[] { "InfoVehicle" })]
         [OpenApiRequestBody("application/json", typeof(InfoVehicleRequestModel), Description = "The JSON describing the vehicle informations.", Required = true)]

@@ -15,7 +15,8 @@ namespace Lib_DatahubImplementation.Clients
         private HttpClient Client { get; }
         private DatahubLoginOptions Configuration { get; }
         private IMemoryCache MyMemoryCache { get; }
-        private readonly string _tokenCacheKey = "azureLoginResponse";
+        private const string _tokenCacheKey = "azureLoginResponse";
+
         public DatahubTokenGenerator(HttpClient client, IOptions<DatahubLoginOptions> configuration, IMemoryCache memoryCache)
         {
             Client = client;
@@ -27,7 +28,8 @@ namespace Lib_DatahubImplementation.Clients
         {
             if (MyMemoryCache.TryGetValue<HttpResponseMessage>(_tokenCacheKey, out var azureLoginResponse))
             {
-                // Await ici car tous les chemins de retour doivent en contenir au moins un
+                // Await ici car tous les chemins de retour doivent en contenir au moins un HttpResponseMessage,
+                // non pas un Task<HttpResponseMessage>
                 return await Task.FromResult(azureLoginResponse);
             }
             try
